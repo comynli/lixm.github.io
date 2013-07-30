@@ -3,13 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2013/7 | Somethings For Me</title>
+  <title>bash大括号参数扩展 | Somethings For Me</title>
   <meta name="author" content="Xueming Li">
+  
+  <meta name="description" content="bash大括号参数扩展（Parameter Expansion）
+假设我们定义了一个变量为：file=/dir1/dir2/dir3/my.file.txt
+字符串截取
+按分隔符截取
+
+${file#*/}截取第一个/右边的字符串 dir1/dir2/dir3/my.file.txt
+${file#">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="bash大括号参数扩展"/>
   <meta property="og:site_name" content="Somethings For Me"/>
 
   
@@ -42,12 +50,7 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-<h2 class="archive-title">2013/7</h2>
-
-
-  
-    <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
   <div class="post-content">
     <header>
@@ -57,7 +60,7 @@
       
       
   
-    <h1 class="title"><a href="/2013/07/30/bash大括号参数扩展/">bash大括号参数扩展</a></h1>
+    <h1 class="title">bash大括号参数扩展</h1>
   
 
     </header>
@@ -127,9 +130,53 @@
     <footer>
       
         
-        <div id="comment">
-        </div>
         
+  
+  <div class="tags">
+    <a href="/tags/bash/">bash</a>
+  </div>
+
+        <!--
+
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+-->
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_copy">复制网址</a>
+  
+  <a class="jiathis_button_tsina">新浪微博</a>
+  
+  
+  <a class="jiathis_button_tqq">腾讯微博</a>
+  
+  
+  <a class="jiathis_button_weixin">微信</a>
+  
+  
+  <a class="jiathis_button_googleplus">Google+</a>
+  
+  
+  <a class="jiathis_button_gmail">Gmail邮箱</a>
+  
+  
+  <a class="jiathis_button_douban9dian">豆瓣9点</a>
+  
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1353916266658508" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
       
       <div class="clearfix"></div>
     </footer>
@@ -138,13 +185,23 @@
 </article>
 
 
-  
+<section id="comment">
+  <h3 class="title" style="float:left">Comments</h1>
 
-  <nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav>
+<!--likaci add duoshuo begin-->
+    <div class="ds-thread"></div>
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"somethings"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('body')[0] 
+        || document.getElementById('comment')[0]).appendChild(ds);
+    })();
+    </script>
+</section>
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
@@ -189,7 +246,7 @@ var disqus_shortname = 'somethings';
   var dsq = document.createElement('script');
   dsq.type = 'text/javascript';
   dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 }());
 </script>
