@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Somethings For Me</title>
+  <title>Kafka 简介 | Somethings For Me</title>
   <meta name="author" content="Xueming Li">
+  
+  <meta name="description" content="简介
+kafka是一个高性能的消息队列服务器，提供类似AMQP的特性，但是并没有实现AMQP协议。kafka有三个角色：Producer, Broker和Consumer。三个角色都可以有多个。三个角色都依赖zookeeper来保证可用性和存储元数据。
+
+其中kafka cluster即Broker">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="Kafka 简介"/>
   <meta property="og:site_name" content="Somethings For Me"/>
 
   
@@ -42,8 +47,7 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
   <div class="post-content">
     <header>
@@ -53,7 +57,7 @@
       
       
   
-    <h1 class="title"><a href="/2014/04/04/kafka_introduction/">Kafka 简介</a></h1>
+    <h1 class="title">Kafka 简介</h1>
   
 
     </header>
@@ -98,9 +102,48 @@
     <footer>
       
         
-        <div id="comment">
-        </div>
         
+        <!--
+
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+-->
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_copy">复制网址</a>
+  
+  <a class="jiathis_button_tsina">新浪微博</a>
+  
+  
+  <a class="jiathis_button_tqq">腾讯微博</a>
+  
+  
+  <a class="jiathis_button_weixin">微信</a>
+  
+  
+  <a class="jiathis_button_googleplus">Google+</a>
+  
+  
+  <a class="jiathis_button_gmail">Gmail邮箱</a>
+  
+  
+  <a class="jiathis_button_douban9dian">豆瓣9点</a>
+  
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1353916266658508" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
       
       <div class="clearfix"></div>
     </footer>
@@ -109,105 +152,24 @@
 </article>
 
 
+<section id="comment">
+  <h3 class="title" style="float:left">Comments</h1>
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-07-30T08:30:19.000Z"><a href="/2013/07/30/bash大括号参数扩展/">Jul 30 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/07/30/bash大括号参数扩展/">bash大括号参数扩展</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h1>bash大括号参数扩展（Parameter Expansion）</h1>
-<p>假设我们定义了一个变量为：<code>file=/dir1/dir2/dir3/my.file.txt</code></p>
-<h2>字符串截取</h2>
-<h3>按分隔符截取</h3>
-<ul>
-<li><code>${file#*/}</code>截取第一个<code>/</code>右边的字符串 <code>dir1/dir2/dir3/my.file.txt</code></li>
-<li><code>${file##*/}</code>截取最后一个<code>/</code>右边的字符串 <code>my.file.txt</code></li>
-<li><code>${file%/*}</code>截取最后一个<code>/</code>左边的字符串 <code>/dir1/dir2/dir3</code></li>
-<li><code>${file%%/*}</code>截取第一个<code>/</code>左边的字符串 （空值）</li>
-</ul>
-<p><strong>总结</strong></p>
-<ul>
-<li><code>#</code>语法为 <code># * separator</code> 截取<code>separator</code>右边的字符串</li>
-<li><code>%</code>语法为 <code>% separator *</code>截取<code>separator</code>左边的字符串</li>
-<li>一个<code>#</code>或<code>%</code>表示贪婪截取</li>
-<li>两个<code>#</code>或<code>%</code>标示非贪婪截取</li>
-</ul>
-<h3>substring</h3>
-<ul>
-<li><code>${file:0:5}</code>从<code>0</code>开始，截取<code>5</code>个字符<code>/dir1</code></li>
-<li><code>${file:5:5}</code>从<code>5</code>开始，截取<code>5</code>个字符<code>/dir2</code></li>
-<li><code>${file::5}</code>从<code>0</code>开始，截取<code>5</code>个字符<code>/dir1</code></li>
-</ul>
-<p><strong>总结</strong></p>
-<p><code>substring</code>表达式语法为<code>${var:pos:length}</code>, 标示对变量<code>var</code>从<code>pos</code>开始截取<code>length</code>个字符，<code>pos</code>为空标示<code>0</code></p>
-<h3>字符串替换</h3>
-<ul>
-<li><code>${file/dir/path}</code>把第一个<code>dir</code>替换成<code>path</code>：<code>/path1/dir2/dir3/my.file.txt</code></li>
-<li><code>${file//dir/path}</code>把所有<code>dir</code>替换成<code>path</code>：<code>/path1/path2/path3/my.file.txt</code></li>
-</ul>
-<p><strong>总结</strong></p>
-<p>字符串替换表达式语法为<code>${var/src/dst}</code>或<code>${var//src/dst}</code>。一个<code>/</code>标示替换第一个<code>src</code>两个<code>//</code>标示替换所有<code>src</code></p>
-<h3>默认值</h3>
-<ul>
-<li><code>${file-my.file.txt}</code>：<code>$file</code>没有设定，则使用<code>my.file.txt</code>返回，<code>$file</code>空值不做处理</li>
-<li><code>${file:-my.file.txt}</code>:<code>$file</code>没有设定或者为空值,则使用<code>my.file.txt</code>返回</li>
-<li><code>${file+my.file.txt}</code>：<code>$file</code>设定，空值或非空值，均使用<code>my.file.txt</code>返回</li>
-<li><code>${file:+my.file.txt}</code>:<code>$file</code>为非空值，使用<code>my.file.txt</code>返回，未设定或空值不做处理</li>
-<li><code>${file=my.file.txt}</code>:<code>$file</code>没有设定，则把<code>my.file.txt</code>赋值给<code>$file</code>并返回，空值不处理</li>
-<li><code>${file:=my.file.txt}</code>:<code>$file</code>没有设定或者为空值,则把<code>my.file.txt</code>复制给<code>$file</code>并返回</li>
-<li><code>${file?my.file.txt}</code>:<code>$file</code>没有设定，把<code>my.file.txt</code>输出到<code>STDERR</code>, 空值不做处理</li>
-<li><code>${file:?my.file.txt}</code>:<code>$file</code>没有设定或为空值，把<code>my.file.txt</code>输出到<code>STDERR</code></li>
-</ul>
-<p><strong>总结</strong></p>
-<ul>
-<li><code>-</code>变量<strong>不存在</strong>返回默认值</li>
-<li><code>+</code>变量<strong>存在</strong>返回默认值</li>
-<li><code>=</code>变量<strong>不存在</strong>赋值并返回默认值</li>
-<li><code>?</code>变量<strong>不存在</strong>默认值输出到<code>STDERR</code></li>
-<li><strong>没有</strong><code>:</code>未设定为不存在，空值有意义</li>
-<li><strong>有</strong><code>:</code>未设定和空值均标示不存在</li>
-</ul>
-<h3>其他</h3>
-<ul>
-<li><code>${#file}</code> 返回字符串长度</li>
-<li><code>${file: -4}</code>返回字符串最后四个字节，注意和<code>${file:-4}</code>的区别</li>
-</ul>
-<p>更多用法请参考：<a href="http://wiki.bash-hackers.org/syntax/pe">Parameter Expansion</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        <div id="comment">
-        </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-
-</article>
-
-
-
-
-<nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav></div></div>
+<!--likaci add duoshuo begin-->
+    <div class="ds-thread"></div>
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"somethings"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('body')[0] 
+        || document.getElementById('comment')[0]).appendChild(ds);
+    })();
+    </script>
+</section>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
@@ -253,7 +215,7 @@ var disqus_shortname = 'somethings';
   var dsq = document.createElement('script');
   dsq.type = 'text/javascript';
   dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 }());
 </script>

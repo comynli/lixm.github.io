@@ -53,6 +53,73 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2014-04-04T03:35:38.000Z"><a href="/2014/04/04/kafka_introduction/">Apr 4 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/04/04/kafka_introduction/">Kafka 简介</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2>简介</h2>
+<p>kafka是一个高性能的消息队列服务器，提供类似<code>AMQP</code>的特性，但是并没有实现<code>AMQP</code>协议。kafka有三个角色：<code>Producer</code>, <code>Broker</code>和<code>Consumer</code>。三个角色都可以有多个。三个角色都依赖zookeeper来保证可用性和存储元数据。</p>
+<p><img src="http://kafka.apache.org/images/producer_consumer.png" alt="图片摘自官网"></p>
+<p>其中kafka cluster即<code>Broker</code>集群。</p>
+<p>我们一般称Broker为server， Producer和Consumer为client， server和client使用tcp通讯，协议非常轻量，并且已经有很多语言的client库。</p>
+<h2>基本概念</h2>
+<h3>topic</h3>
+<p>kafka按照<code>topic</code>分类消息，一个<code>topic</code>可以认为是一类消息，相当于<code>AMQP</code>里的一个<code>queue</code>。</p>
+<h3>partition</h3>
+<p>kafka为了提高性能，可以对消息分区，一个<code>topic</code>的消息，可以按照预先定义的规则存储到若干个分区上，类似于<code>RAID</code>的条带化，<code>partition</code>可以实现并行IO，已提高速度。</p>
+<h3>log</h3>
+<p>kafka的消息存储在<strong>append-only</strong>的log文件里，<code>partition</code>在存储层面是log文件，任何发布到此分区的消息，都会<code>append</code>到log文件的尾部。</p>
+<p>与<code>AMQP</code>不同，消息即使已经被消费，也不会立刻被删除，而是根据配置，在服务器上保留一段时间。到时间后，无论消息是否被消费，文件都会被清除。kafka可以配置单个日志文件的大小，较多的文件除了消耗较多的硬盘空间，并不会造成新能下降。</p>
+<h3>offset</h3>
+<p><code>offset</code>是消息在日志中的位置，<code>consumer</code>根据<code>offset</code>信息，顺序的读取消息，<code>offset</code>由<code>consumer</code>自行维护，并上报到zookeeper。事实上，<code>consumer</code>可以按照任何顺序消费消息，只需要修改<code>offset</code>。由于kafka的<code>Broker</code>不维护任何<code>offset</code>信息，所以实现起来非常轻量。</p>
+<h3>replicas</h3>
+<p>kafka支持消息的HA，<code>replicas</code>即消息的复制份数，消息的复制是按照<code>partition</code>的，在复制中，每个<code>partition</code>有一个唯一的<code>leader</code>与<code>N-1</code>个<code>follower</code>。</p>
+<p><code>leader</code>负责所有的读写操作，<code>follower</code>只是单纯的同步消息，可以把<code>follower</code>看成一个<code>consumer</code>消费消息，并追加到自己的log。当<code>leader</code>失效时候，会选举新的<code>follower</code>成为新的<code>leader</code>，与HBase的不同，一个<code>partition</code>只要存活<code>N-1</code>个节点就可用，而不需要大多数同意。</p>
+<p><code>leader</code>承载了所有的读写负载，但是由于<code>replicated</code>是基于<code>partition</code>的，有多少个<code>partition</code>就有多少个<code>leader</code>，kafka会把<code>leader</code>均匀的分散到所有节点来缓解压力。</p>
+<h2>Producer</h2>
+<p>消息的生产者，Producer将发送消息到<code>topic</code>中, Producer也能决定使用何种方式，把消息分布到<code>partition</code>中，如果一个<code>topic</code>有多个<code>partition</code>， Producer发送消息的时候，需要选择<code>partition 算法</code>。作为Producer的设计者，选择<code>partition</code>时，应尽量让消息均匀的分布到每个<code>partition</code>中。</p>
+<h2>Consumer</h2>
+<p>kafka中，Consumer是分组的，每个<code>Consumer Group</code>消费一个<code>topic</code>的消息，一个<code>Consumer Group</code>可以包含一个或多个<code>Consumer</code>, <code>Consumer Group</code>中的一个或多个<code>Consumer</code>共享<code>offset</code>，也就是说，一个<code>topic</code>的消息，会广播到所有订阅这个<code>topic</code>的<code>Consumer Group</code>，而对于一个<code>Consumer Group</code>，一个消息只会被其中的一个<code>Consumer</code>消费。</p>
+<h2>Replication</h2>
+<p>kafka的复制以<code>partition</code>为基础，kafka将<code>partition</code>复制到多个节点，每个<code>partition</code>有且只有一个<code>leader</code>，零个或多个<code>follwer</code>，复制份数可以在<code>broker</code>配置文件中配置，也可以在创建<code>topic</code>时指定。</p>
+<p><code>leader</code>处理所有读写负载，kafka会把多个<code>partition</code>的<code>leader</code>分布到所有<code>broker</code>节点。</p>
+<p><code>follower</code>像一个普通的<code>consumer</code>一样从<code>leader</code>消费消息。并且把消息应用到日志。</p>
+<p><code>leader</code>保持跟踪状态为<code>in sync</code>的所有<code>follower</code>，如果一个<code>follower</code>失效、卡住或者落后太多，<code>leader</code>将会把它剔除。配置项<code>replica.lag.time.max.ms</code>定义<code>follower</code>多长时间没有同步被认为<em>卡住</em>，<code>replica.lag.max.messages</code>定义落后多少为<em>落后太多</em>。<strong>当一个<code>follower</code>被剔除后，并没有<code>follower</code>来补充被剔除的<code>follower</code>的位置。</strong>此时需要立刻处理，恢复被剔除的<code>follower</code>或者执行<code>reassign partitions</code>操作。</p>
+<p>kafka不处理<em>拜占庭将军</em>问题，一条消息，只有所有该<code>partition</code>的节点都同步了，才置为<code>commited</code>。只有<code>commited</code>的消息才会被<code>consumer</code>消费。所以，只要<code>partition</code>的任意一个节点存活，消息就不会丢失。当<code>leader</code>失效时，kafka并不需要像HBase，zookeeper那样的多数派同意(Quorum)，因为kafka的元数据是保存在zookeeper里的，而且kafka要保证<code>N-1</code>个节点存活时，还可以对外提供服务。当<code>leader</code>失效时，kafka会在所有<code>follower</code>中选出一个<code>leader</code>，选举过程考虑两方面:</p>
+<ul>
+<li><code>follower</code>的数据是否最新</li>
+<li>负载是否均衡</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        <div id="comment">
+        </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-07-30T08:30:19.000Z"><a href="/2013/07/30/bash大括号参数扩展/">Jul 30 2013</a></time>
       
       
@@ -163,6 +230,8 @@
   
     <li><a href="/tags/bash/">bash</a><small>1</small></li>
   
+    <li><a href="/tags/python-flask/">python flask</a><small>0</small></li>
+  
   </ul>
 </div>
 
@@ -174,7 +243,7 @@
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2013 Xueming Li
+  &copy; 2014 Xueming Li
   
 </div>
 <div class="clearfix"></div></footer>
